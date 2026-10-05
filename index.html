@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Africa University · Student Portal</title>
+<style>
+:root {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #121621;
+  --bg-sidebar-hover: #1e2638;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-light: #f8fafc;
+  --border-color: #e2e8f0;
+  --primary: #9e1b32;
+  --primary-hover: #7e1224;
+  --primary-light: #fef2f4;
+  --primary-tint: rgba(158, 27, 50, 0.08);
+  --accent-gold: #d4af37;
+  --accent-blue: #2563eb;
+  --accent-green: #16a34a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+[data-theme="dark"] {
+  --bg-main: #0b0f17;
+  --bg-card: #151c2c;
+  --bg-sidebar: #090d16;
+  --bg-sidebar-hover: #151d2f;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-light: #f8fafc;
+  --border-color: #232d42;
+  --primary: #b82a35;
+  --primary-hover: #d1323f;
+  --primary-light: #2d1217;
+  --primary-tint: rgba(184, 42, 53, 0.18);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.35);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+.app-layout { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+aside {
+  width: 280px;
+  background: var(--bg-sidebar);
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 30;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brand-header {
+  padding: 20px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.brand-crest {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary), var(--accent-gold));
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(158, 27, 50, 0.4);
+}
+
+.brand-text b { display: block; font-family: var(--font-serif); font-size: 0.95rem; letter-spacing: 0.5px; }
+.brand-text small { font-size: 0.65rem; color: #94a3b8; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.close-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.nav-section { padding: 16px 12px; flex: 1; overflow-y: auto; }
+.nav-caption {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #64748b;
+  margin: 12px 10px 8px;
+}
+
+nav button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+  text-align: left;
+}
+
+nav button:hover { background: var(--bg-sidebar-hover); color: #f8fafc; }
+nav button.active {
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(158, 27, 50, 0.3);
+}
+
+nav button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.user-sidebar-card {
+  padding: 14px;
+  margin: 12px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #d1323f);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.user-info b { display: block; font-size: 0.88rem; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+.user-info span { font-size: 0.75rem; color: #94a3b8; }
+
+/* Main Content */
+main {
+  flex: 1;
+  margin-left: 280px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  height: 64px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+}
+
+.header-left { display: flex; align-items: center; gap: 14px; flex: 1; }
+.menu-btn {
+  display: none;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-student-wrapper { position: relative; max-width: 320px; width: 100%; }
+.select-student-wrapper select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+}
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s;
+}
+.icon-btn:hover { background: var(--border-color); }
+.icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* Page View Container */
+.container { padding: 24px; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+/* Banner / Hero */
+.hero-card {
+  background: linear-gradient(135deg, #1e090c 0%, #3d1017 50%, #151c2c 100%);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card::after {
+  content: "AU";
+  position: absolute;
+  right: -20px;
+  bottom: -30px;
+  font-size: 10rem;
+  font-family: var(--font-serif);
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  pointer-events: none;
+}
+
+.hero-main { display: flex; align-items: center; gap: 20px; z-index: 1; }
+.hero-avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid rgba(255,255,255,0.2);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+}
+
+.hero-details h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; font-family: var(--font-serif); }
+.hero-details p { color: #cbd5e1; font-size: 0.92rem; }
+.hero-details .badge {
+  display: inline-block;
+  margin-top: 8px;
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--accent-gold);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s;
+  z-index: 1;
+}
+.btn-primary:hover { background: var(--primary-hover); }
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-tint);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.stat-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+.stat-label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-value { font-size: 1.6rem; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+.stat-subtext { font-size: 0.78rem; color: var(--text-muted); }
+
+/* Card Content */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+.card-subtitle { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Data Tables & Key Value Rows */
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+.data-row:last-child { border-bottom: none; }
+.data-label { color: var(--text-muted); font-weight: 500; }
+.data-value { font-weight: 600; text-align: right; color: var(--text-main); }
+
+/* Progress Bar */
+.progress-container { margin: 12px 0; }
+.progress-bar {
+  height: 10px;
+  background: var(--border-color);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent-gold));
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* Chips & Badges */
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+  background: var(--primary-tint);
+  color: var(--primary);
+  border: 1px solid rgba(158, 27, 50, 0.15);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip button {
+  background: transparent;
+  border: none;
+  color: currentColor;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Item Lists */
+.list-item {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.list-item-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+.list-item-desc { font-size: 0.85rem; color: var(--text-muted); }
+.list-item-tag { font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; background: var(--border-color); color: var(--text-muted); font-weight: 600; }
+
+/* Forms & Inputs */
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-main);
+  color: var(--text-main);
+  font: inherit;
+  font-size: 0.9rem;
+  outline: none;
+}
+.form-control:focus { border-color: var(--primary); }
+
+/* Grid Layouts */
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+/* Timetable Grid */
+.timetable { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+.timetable th, .timetable td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
+.timetable th { background: var(--bg-main); font-weight: 600; color: var(--text-muted); }
+.timetable-event { background: var(--primary-tint); border-left: 3px solid var(--primary); padding: 6px 8px; border-radius: 4px; }
+
+/* Scrim */
+#scrim {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  z-index: 25;
+}
+
+/* Responsive */
+@media (max-width: 820px) {
+  aside { transform: translateX(-100%); width: 280px; }
+  body.menu-open aside { transform: translateX(0); }
+  body.menu-open #scrim { display: block; }
+  main { margin-left: 0; }
+  .menu-btn, .close-btn { display: flex; }
+  .hero-card { flex-direction: column; align-items: flex-start; }
+  .hero-card .btn-primary { width: 100%; justify-content: center; }
+}
+
+@media print {
+  aside, header, #scrim, .btn-primary, .icon-btn, .no-print { display: none !important; }
+  main { margin-left: 0 !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .card { border: 1px solid #ccc !important; box-shadow: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <aside>
+    <div class="brand-header">
+      <a href="#" class="brand-logo">
+        <div class="brand-crest">AU</div>
+        <div class="brand-text">
+          <b>AFRICA UNIVERSITY</b>
+          <small>Student Portal</small>
+        </div>
+      </a>
+      <button class="close-btn" id="closeSidebar" aria-label="Close menu">✕</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-caption">Main Navigation</div>
+      <nav id="navMenu"></nav>
+    </div>
+
+    <div class="user-sidebar-card">
+      <div class="user-avatar" id="sidebarAvatar">R</div>
+      <div class="user-info">
+        <b id="sidebarName">Student Name</b>
+        <span id="sidebarId">ID: -----</span>
+      </div>
+    </div>
+  </aside>
+
+  <div id="scrim"></div>
+
+  <!-- Main Content -->
+  <main>
+    <header>
+      <div class="header-left">
+        <button class="menu-btn" id="openSidebar" aria-label="Open menu">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="select-student-wrapper">
+          <select id="studentSelect" aria-label="Select Active Student Profile"></select>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+          <svg viewBox="0 0 24 24" id="themeIcon"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+        <button class="icon-btn" onclick="window.print()" title="Print Summary">
+          <svg viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="container" id="viewContainer">
+      <!-- Dynamic View Rendered Here -->
+    </div>
+  </main>
+</div>
+
+<script>
+// --- Dataset ---
+var STUDENTS = [
+  {
+    id: "250505",
+    name: "Roger M Domah, Jr",
+    program: "Computer Information Systems",
+    college: "College of Business, Peace, Leadership & Governance",
+    gpa: 4.00,
+    phone: "+263 788 068 003",
+    email: "domahr@africau.edu",
+    residence: "Jockey Club Residence, Room 104",
+    advisor: "Dr. C. Chimbwanda",
+    year: "Year 3 · Semester 2",
+    completedCredits: 94,
+    requiredCredits: 120,
+    financialStatus: "Cleared ($0.00)",
+    skills: ["C#", "Python", "Web development", "Database management", "GitHub & version control", "SQL Server"],
+    courses: [
+      { code: "CS301", title: "Web Technology", credits: 4, grade: "A", instructor: "Mr. T. Banda", time: "Mon 09:00 - 11:00 (Lab 2)" },
+      { code: "CS302", title: "Database Systems", credits: 3, grade: "A", instructor: "Dr. S. Moyo", time: "Tue 11:00 - 13:00 (Room B4)" },
+      { code: "CS305", title: "Object-Oriented C#", credits: 4, grade: "A", instructor: "Eng. R. Ndlovu", time: "Wed 14:00 - 16:00 (Lab 1)" },
+      { code: "CS310", title: "Systems Analysis & Design", credits: 3, grade: "A", instructor: "Mrs. E. Mutasa", time: "Thu 10:00 - 12:00 (Room A12)" }
+    ],
+    projects: [
+      { name: "Student Portal Group Prototype", role: "Lead Frontend Developer", desc: "Interactive student profile & transcript portal build." },
+      { name: "Library Resource Tracker", role: "Database Admin", desc: "Relational database schema designed for campus library management." }
+    ]
+  },
+  {
+    id: "250403",
+    name: "Monica Ajak",
+    program: "Computer Information Systems",
+    college: "College of Business, Peace, Leadership & Governance",
+    gpa: 3.68,
+    phone: "+263 781 059 331",
+    email: "ajakm@africau.edu",
+    residence: "Grace Mugabe Residence, Room 208",
+    advisor: "Prof. M. Mapuranga",
+    year: "Year 3 · Semester 2",
+    completedCredits: 88,
+    requiredCredits: 120,
+    financialStatus: "Cleared ($0.00)",
+    skills: ["Programming", "Web development", "Databases", "Systems Analysis and Design", "UI Design"],
+    courses: [
+      { code: "CS301", title: "Web Technology", credits: 4, grade: "A-", instructor: "Mr. T. Banda", time: "Mon 09:00 - 11:00 (Lab 2)" },
+      { code: "CS302", title: "Database Systems", credits: 3, grade: "B+", instructor: "Dr. S. Moyo", time: "Tue 11:00 - 13:00 (Room B4)" },
+      { code: "CS310", title: "Systems Analysis & Design", credits: 3, grade: "A", instructor: "Mrs. E. Mutasa", time: "Thu 10:00 - 12:00 (Room A12)" }
+    ],
+    projects: [
+      { name: "E-Commerce System Mockup", role: "UI/UX Designer", desc: "User journey flow & web mockups for local produce commerce." }
+    ]
+  },
+  {
+    id: "250548",
+    name: "Mercy Ngonidzaishe Ndoro",
+    program: "Software Engineering",
+    college: "College of Health, Agriculture & Natural Sciences",
+    gpa: 3.70,
+    phone: "+263 77 811 0032",
+    email: "ndorom@africau.edu",
+    residence: "Jockey Club Residence, Room 215",
+    advisor: "Dr. F. Gumbo",
+    year: "Year 3 · Semester 2",
+    completedCredits: 90,
+    requiredCredits: 128,
+    financialStatus: "Cleared ($0.00)",
+    skills: ["Python", "C#", "Web development", "Database management", "Software Testing"],
+    courses: [
+      { code: "SE301", title: "Software Architecture", credits: 4, grade: "A", instructor: "Dr. F. Gumbo", time: "Mon 14:00 - 16:00 (Lab 3)" },
+      { code: "CS301", title: "Web Technology", credits: 4, grade: "A-", instructor: "Mr. T. Banda", time: "Mon 09:00 - 11:00 (Lab 2)" }
+    ],
+    projects: [
+      { name: "Automated Testing Suite", role: "QA Engineer", desc: "Integration tests written for academic grading engines." }
+    ]
+  },
+  {
+    id: "250488",
+    name: "Tadiwa Mashiri",
+    program: "Computer Information Systems",
+    college: "College of Business, Peace, Leadership & Governance",
+    gpa: 3.20,
+    phone: "+263 782 826 985",
+    email: "mashirit@africau.edu",
+    residence: "Mutare Campus Hall 1",
+    advisor: "Dr. C. Chimbwanda",
+    year: "Year 2 · Semester 2",
+    completedCredits: 62,
+    requiredCredits: 120,
+    financialStatus: "Balance Pending ($120.00)",
+    skills: ["Python", "C#", "Web development", "VB", "Network Fundamentals"],
+    courses: [
+      { code: "CS201", title: "Data Structures", credits: 3, grade: "B", instructor: "Eng. R. Ndlovu", time: "Wed 09:00 - 11:00 (Room B1)" },
+      { code: "CS301", title: "Web Technology", credits: 4, grade: "B+", instructor: "Mr. T. Banda", time: "Mon 09:00 - 11:00 (Lab 2)" }
+    ],
+    projects: [
+      { name: "Network Topology Mapping", role: "Network Tech", desc: "Simulated campus local network map in Cisco Packet Tracer." }
+    ]
+  },
+  {
+    id: "250754",
+    name: "Tinevimbo Munjoma",
+    program: "Computer Information Systems",
+    college: "College of Business, Peace, Leadership & Governance",
+    gpa: 3.50,
+    phone: "0777 777 556",
+    email: "munjomat@africau.edu",
+    residence: "Mutare Campus Hall 3",
+    advisor: "Prof. M. Mapuranga",
+    year: "Year 3 · Semester 1",
+    completedCredits: 78,
+    requiredCredits: 120,
+    financialStatus: "Cleared ($0.00)",
+    skills: ["Python", "C#", "Problem solving", "Systems design", "Algorithmic Analysis"],
+    courses: [
+      { code: "CS301", title: "Web Technology", credits: 4, grade: "A-", instructor: "Mr. T. Banda", time: "Mon 09:00 - 11:00 (Lab 2)" },
+      { code: "CS310", title: "Systems Analysis & Design", credits: 3, grade: "B+", instructor: "Mrs. E. Mutasa", time: "Thu 10:00 - 12:00 (Room A12)" }
+    ],
+    projects: [
+      { name: "Algorithmic Sorting Benchmarks", role: "Developer", desc: "Performance study on sorting algorithms using Python." }
+    ]
+  }
+];
+
+// Navigation Items
+var NAV_ITEMS = [
+  { id: "ov", name: "Overview", icon: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>' },
+  { id: "pa", name: "Personal & Academic", icon: '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' },
+  { id: "co", name: "Courses & Timetable", icon: '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>' },
+  { id: "ap", name: "Progress & GPA Calc", icon: '<svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>' },
+  { id: "sk", name: "Skills", icon: '<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' },
+  { id: "ac", name: "Achievements", icon: '<svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>' },
+  { id: "pr", name: "Projects", icon: '<svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>' },
+  { id: "fi", name: "Financials", icon: '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>' },
+  { id: "ct", name: "Contact & Support", icon: '<svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>' }
+];
+
+// App State
+var currentStudentIdx = 0;
+var currentView = "ov";
+var userAchievements = {};
+var userSkills = {};
+
+// Local Storage Handlers
+try {
+  userAchievements = JSON.parse(localStorage.getItem("au_achievements") || "{}");
+  userSkills = JSON.parse(localStorage.getItem("au_skills") || "{}");
+} catch(e) {}
+
+function saveAchievements() {
+  try { localStorage.setItem("au_achievements", JSON.stringify(userAchievements)); } catch(e){}
+}
+function saveSkills() {
+  try { localStorage.setItem("au_skills", JSON.stringify(userSkills)); } catch(e){}
+}
+
+// Helper DOM Functions
+function $(id) { return document.getElementById(id); }
+function escapeHtml(str) {
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// Initialize Select Options
+function initStudentSelect() {
+  var select = $("studentSelect");
+  select.innerHTML = "";
+  STUDENTS.forEach(function(s, idx) {
+    var opt = document.createElement("option");
+    opt.value = idx;
+    opt.textContent = s.name + " (" + s.id + ")";
+    select.appendChild(opt);
+  });
+  select.value = currentStudentIdx;
+  select.onchange = function() {
+    currentStudentIdx = parseInt(this.value, 10);
+    render();
+  };
+}
+
+// Render Navigation
+function renderNav() {
+  var nav = $("navMenu");
+  nav.innerHTML = "";
+  NAV_ITEMS.forEach(function(item) {
+    var btn = document.createElement("button");
+    btn.className = (item.id === currentView) ? "active" : "";
+    btn.innerHTML = item.icon + '<span>' + item.name + '</span>';
+    btn.onclick = function() {
+      currentView = item.id;
+      document.body.classList.remove("menu-open");
+      render();
+      window.scrollTo(0, 0);
+    };
+    nav.appendChild(btn);
+  });
+}
+
+// Main Render Dispatcher
+function render() {
+  renderNav();
+  var s = STUDENTS[currentStudentIdx];
+  var initial = s.name.charAt(0);
+  
+  // Update Sidebar Profile
+  $("sidebarAvatar").textContent = initial;
+  $("sidebarName").textContent = s.name;
+  $("sidebarId").textContent = "ID: " + s.id;
+
+  var achievements = userAchievements[s.id] || s.defaultAchievements || [
+    { title: "Dean's Honor List", detail: "Maintained GPA above 3.50", date: "2025-12-10", category: "Academic" }
+  ];
+  var skills = userSkills[s.id] || s.skills;
+
+  var html = "";
+
+  // 1. OVERVIEW VIEW
+  if (currentView === "ov") {
+    html += '<div class="hero-card">' +
+      '<div class="hero-main">' +
+        '<div class="hero-avatar">' + initial + '</div>' +
+        '<div class="hero-details">' +
+          '<h1>' + escapeHtml(s.name) + '</h1>' +
+          '<p>' + escapeHtml(s.program) + ' · ' + s.year + '</p>' +
+          '<div class="badge">' + escapeHtml(s.college) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="btn-primary" onclick="window.print()">' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>' +
+        'Print Summary' +
+      '</button>' +
+    '</div>';
+
+    html += '<div class="stats-grid">' +
+      '<div class="stat-card">' +
+        '<div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>' +
+        '<div><div class="stat-label">Current GPA</div><div class="stat-value">' + s.gpa.toFixed(2) + '</div><div class="stat-subtext">Scale 4.00</div></div>' +
+      '</div>' +
+      '<div class="stat-card">' +
+        '<div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg></div>' +
+        '<div><div class="stat-label">Credits Earned</div><div class="stat-value">' + s.completedCredits + '</div><div class="stat-subtext">Target: ' + s.requiredCredits + ' hrs</div></div>' +
+      '</div>' +
+      '<div class="stat-card">' +
+        '<div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>' +
+        '<div><div class="stat-label">Enrolled Modules</div><div class="stat-value">' + s.courses.length + '</div><div class="stat-subtext">Active Semester</div></div>' +
+      '</div>' +
+      '<div class="stat-card">' +
+        '<div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg></div>' +
+        '<div><div class="stat-label">Achievements</div><div class="stat-value">' + achievements.length + '</div><div class="stat-subtext">Recognitions</div></div>' +
+      '</div>' +
+    '</div>';
+
+    html += '<div class="grid-2">' +
+      '<div class="card">' +
+        '<div class="card-header"><span class="card-title">Top Skills & Competencies</span></div>' +
+        '<div class="chip-group">' + skills.map(function(k){ return '<span class="chip">' + escapeHtml(k) + '</span>'; }).join('') + '</div>' +
+      '</div>' +
+      '<div class="card">' +
+        '<div class="card-header"><span class="card-title">Active Enrolled Courses</span></div>' +
+        s.courses.map(function(c){
+          return '<div class="list-item"><div><div class="list-item-title">' + escapeHtml(c.code) + ' - ' + escapeHtml(c.title) + '</div><div class="list-item-desc">' + escapeHtml(c.instructor) + ' · ' + escapeHtml(c.time) + '</div></div><span class="list-item-tag">' + c.credits + ' Credits</span></div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+  }
+
+  // 2. PERSONAL & ACADEMIC
+  else if (currentView === "pa") {
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Personal & Academic Details</span></div>' +
+      '<div class="data-row"><span class="data-label">Full Name</span><span class="data-value">' + escapeHtml(s.name) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Student ID Number</span><span class="data-value">' + escapeHtml(s.id) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">College</span><span class="data-value">' + escapeHtml(s.college) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Program of Study</span><span class="data-value">' + escapeHtml(s.program) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Academic Advisor</span><span class="data-value">' + escapeHtml(s.advisor) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Year / Semester</span><span class="data-value">' + escapeHtml(s.year) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Campus Residence</span><span class="data-value">' + escapeHtml(s.residence) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Financial Status</span><span class="data-value">' + escapeHtml(s.financialStatus) + '</span></div>' +
+    '</div>';
+  }
+
+  // 3. COURSES & TIMETABLE
+  else if (currentView === "co") {
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Current Registered Modules</span></div>' +
+      s.courses.map(function(c){
+        return '<div class="list-item"><div><div class="list-item-title">' + escapeHtml(c.code) + ': ' + escapeHtml(c.title) + '</div><div class="list-item-desc">Lecturer: ' + escapeHtml(c.instructor) + '</div><div class="list-item-desc">Schedule: ' + escapeHtml(c.time) + '</div></div><span class="list-item-tag">' + c.credits + ' Credit Hours</span></div>';
+      }).join('') +
+    '</div>';
+
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Weekly Lecture Schedule</span></div>' +
+      '<table class="timetable">' +
+        '<thead><tr><th>Day</th><th>Course Code & Title</th><th>Time & Room</th></tr></thead>' +
+        '<tbody>' +
+          s.courses.map(function(c){
+            return '<tr><td><b>' + escapeHtml(c.time.split(' ')[0]) + '</b></td><td>' + escapeHtml(c.code) + ' - ' + escapeHtml(c.title) + '</td><td>' + escapeHtml(c.time) + '</td></tr>';
+          }).join('') +
+        '</tbody>' +
+      '</table>' +
+    '</div>';
+  }
+
+  // 4. ACADEMIC PROGRESS & GPA CALCULATOR
+  else if (currentView === "ap") {
+    var pct = Math.round((s.completedCredits / s.requiredCredits) * 100);
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Degree Completion Progress</span></div>' +
+      '<div style="font-size:1.8rem; font-weight:700;">' + pct + '% Completed</div>' +
+      '<div class="progress-container"><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div></div>' +
+      '<p class="card-subtitle">' + s.completedCredits + ' of ' + s.requiredCredits + ' required credit hours completed.</p>' +
+    '</div>';
+
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Interactive Projected GPA Simulator</span></div>' +
+      '<p class="card-subtitle" style="margin-bottom:14px;">Simulate your upcoming semester grade points to project your target cumulative GPA.</p>' +
+      '<div class="grid-2">' +
+        '<div>' +
+          '<div class="form-group"><label>Target Course Grade</label>' +
+            '<select id="simGrade" class="form-control">' +
+              '<option value="4.0">A (4.00)</option>' +
+              '<option value="3.7">A- (3.70)</option>' +
+              '<option value="3.3">B+ (3.30)</option>' +
+              '<option value="3.0">B (3.00)</option>' +
+              '<option value="2.7">B- (2.70)</option>' +
+              '<option value="2.0">C (2.00)</option>' +
+            '</select>' +
+          '</div>' +
+          '<div class="form-group"><label>Course Credits</label><input type="number" id="simCredits" class="form-control" value="3" min="1" max="6"></div>' +
+          '<button class="btn-primary" onclick="calculateGPA()">Calculate Projection</button>' +
+        '</div>' +
+        '<div style="background:var(--bg-main); padding:16px; border-radius:var(--radius-sm); border:1px solid var(--border-color); display:flex; flex-direction:column; justify-center; align-items:center; text-align:center;">' +
+          '<div style="font-size:0.8rem; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Projected Cumulative GPA</div>' +
+          '<div id="projectedGpa" style="font-size:2.4rem; font-weight:800; color:var(--primary); margin:8px 0;">' + s.gpa.toFixed(2) + '</div>' +
+          '<div style="font-size:0.8rem; color:var(--text-muted);">Based on ' + s.completedCredits + ' current credit hours</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  // 5. SKILLS
+  else if (currentView === "sk") {
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Skills & Technical Competencies</span></div>' +
+      '<div class="chip-group" id="skillsChipGroup">' +
+        skills.map(function(k, idx){
+          return '<span class="chip">' + escapeHtml(k) + ' <button onclick="removeSkill(' + idx + ')">×</button></span>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Add New Skill</span></div>' +
+      '<div style="display:flex; gap:10px;">' +
+        '<input type="text" id="newSkillInput" class="form-control" placeholder="e.g. React.js, Data Analysis, Docker">' +
+        '<button class="btn-primary" onclick="addSkill()">Add</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  // 6. ACHIEVEMENTS
+  else if (currentView === "ac") {
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Academic & Leadership Achievements (' + achievements.length + ')</span></div>' +
+      achievements.map(function(a, idx){
+        return '<div class="list-item"><div><div class="list-item-title">' + escapeHtml(a.title) + '</div><div class="list-item-desc">' + escapeHtml(a.detail) + '</div><div class="list-item-desc" style="margin-top:4px; font-weight:600; color:var(--primary);">' + escapeHtml(a.date || "") + ' · ' + escapeHtml(a.category || "General") + '</div></div><button class="icon-btn" onclick="removeAchievement(' + idx + ')" title="Remove"><svg viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div>';
+      }).join('') +
+    '</div>';
+
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Record New Achievement</span></div>' +
+      '<div class="form-group"><label>Title</label><input type="text" id="achTitle" class="form-control" placeholder="e.g. Best Student Project Award"></div>' +
+      '<div class="form-group"><label>Details / Description</label><input type="text" id="achDetail" class="form-control" placeholder="e.g. Awarded first prize in College Research Day"></div>' +
+      '<div class="grid-2">' +
+        '<div class="form-group"><label>Date</label><input type="date" id="achDate" class="form-control"></div>' +
+        '<div class="form-group"><label>Category</label><select id="achCat" class="form-control"><option>Academic</option><option>Leadership</option><option>Certification</option><option>Competition</option></select></div>' +
+      '</div>' +
+      '<button class="btn-primary" onclick="addAchievement()">Add Achievement</button>' +
+    '</div>';
+  }
+
+  // 7. PROJECTS
+  else if (currentView === "pr") {
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Academic & Practical Projects</span></div>' +
+      s.projects.map(function(p){
+        return '<div class="list-item"><div><div class="list-item-title">' + escapeHtml(p.name) + '</div><div class="list-item-desc">Role: <b>' + escapeHtml(p.role) + '</b></div><div class="list-item-desc" style="margin-top:4px;">' + escapeHtml(p.desc) + '</div></div></div>';
+      }).join('') +
+    '</div>';
+  }
+
+  // 8. FINANCIALS
+  else if (currentView === "fi") {
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Financial Summary</span></div>' +
+      '<div class="data-row"><span class="data-label">Account Status</span><span class="data-value">' + escapeHtml(s.financialStatus) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Semester Tuition Fee</span><span class="data-value">$1,250.00</span></div>' +
+      '<div class="data-row"><span class="data-label">Technology & Lab Fee</span><span class="data-value">$150.00</span></div>' +
+      '<div class="data-row"><span class="data-label">Total Outstanding Balance</span><span class="data-value" style="color:var(--primary); font-weight:800;">$0.00</span></div>' +
+    '</div>';
+  }
+
+  // 9. CONTACT & SUPPORT
+  else if (currentView === "ct") {
+    html += '<div class="card">' +
+      '<div class="card-header"><span class="card-title">Student Contact Details</span></div>' +
+      '<div class="data-row"><span class="data-label">Phone Number</span><span class="data-value">' + escapeHtml(s.phone) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">University Email</span><span class="data-value">' + escapeHtml(s.email) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Residence Hall</span><span class="data-value">' + escapeHtml(s.residence) + '</span></div>' +
+      '<div class="data-row"><span class="data-label">Academic Advisor</span><span class="data-value">' + escapeHtml(s.advisor) + '</span></div>' +
+    '</div>';
+  }
+
+  $("viewContainer").innerHTML = html;
+}
+
+// Action Functions
+function addSkill() {
+  var input = $("newSkillInput");
+  var val = input.value.trim();
+  if(!val) return;
+  var s = STUDENTS[currentStudentIdx];
+  var sk = userSkills[s.id] || s.skills.slice();
+  sk.push(val);
+  userSkills[s.id] = sk;
+  saveSkills();
+  render();
+}
+
+function removeSkill(idx) {
+  var s = STUDENTS[currentStudentIdx];
+  var sk = userSkills[s.id] || s.skills.slice();
+  sk.splice(idx, 1);
+  userSkills[s.id] = sk;
+  saveSkills();
+  render();
+}
+
+function addAchievement() {
+  var title = $("achTitle").value.trim();
+  var detail = $("achDetail").value.trim();
+  var date = $("achDate").value;
+  var cat = $("achCat").value;
+  if(!title) return;
+
+  var s = STUDENTS[currentStudentIdx];
+  var list = userAchievements[s.id] || s.defaultAchievements || [];
+  list.push({ title: title, detail: detail, date: date, category: cat });
+  userAchievements[s.id] = list;
+  saveAchievements();
+  render();
+}
+
+function removeAchievement(idx) {
+  var s = STUDENTS[currentStudentIdx];
+  var list = userAchievements[s.id] || s.defaultAchievements || [];
+  list.splice(idx, 1);
+  userAchievements[s.id] = list;
+  saveAchievements();
+  render();
+}
+
+function calculateGPA() {
+  var s = STUDENTS[currentStudentIdx];
+  var addGrade = parseFloat($("simGrade").value);
+  var addCredits = parseInt($("simCredits").value, 10);
+  
+  var currentPoints = s.gpa * s.completedCredits;
+  var newTotalCredits = s.completedCredits + addCredits;
+  var newTotalPoints = currentPoints + (addGrade * addCredits);
+  var proj = newTotalPoints / newTotalCredits;
+
+  $("projectedGpa").textContent = proj.toFixed(2);
+}
+
+// Mobile Sidebar Toggles
+$("openSidebar").onclick = function() { document.body.classList.add("menu-open"); };
+$("closeSidebar").onclick = $("scrim").onclick = function() { document.body.classList.remove("menu-open"); };
+
+// Theme Toggle Engine
+var themeToggleBtn = $("themeToggle");
+var currentTheme = localStorage.getItem("au_theme") || "system";
+
+function applyTheme(theme) {
+  if (theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+  }
+}
+
+themeToggleBtn.onclick = function() {
+  var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  var newTheme = isDark ? "light" : "dark";
+  localStorage.setItem("au_theme", newTheme);
+  applyTheme(newTheme);
+};
+
+applyTheme(currentTheme);
+initStudentSelect();
+render();
+</script>
+</body>
+</html>
